@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder">Welcome to Wonder Full 🔮</h1>
+                <p class="lead mb-0">Ask for advice, opinions and feedback! What do people think...🤔</p>
+                <p class="lead" style="margin-top: 2px">Can you help them too? No wonder about it!</p>
+            </div>
+        </div>
+    </header>
+    <!-- Page content-->
+    <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Featured blog post-->
+                <h2 class="text-white h4">Featured</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="small text-muted">{{ featured_question.category }} | {{ featured_question.date.strftime("%B %d, %Y") }} | {{ featured_question.author.name }}</div>
+                        <h2 class="card-title">{{ featured_question.title[:91] }}{% if featured_question.title[90]: %}... {% endif %}</h2>
+                        <p class="card-text">{{ featured_question.body[:150] | safe }}{% if featured_question.body[150]: %}...{% endif %}</p>
+                        <a class="btn btn-primary" href="{{ url_for('show_question', q_id=featured_question.id) }}">Read more →</a>
+                    </div>
+                </div>
+                <!-- Nested row for non-featured blog posts-->
+                <h2 class="text-white h4">Latest Questions</h2>
+                <div class="row">
+                    {% for question in questions: %}
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="small text-muted">{{ question.category }} | {{ question.date.strftime("%B %d, %Y") }} | {{ question.author.name }}</div>
+                                <h2 class="card-title h4">{{ question.title[:51] }}{% if question.title[50]: %}... {% endif %}</h2>
+                                <p class="card-text">{{ question.body[:90] | safe }}{% if question.body[90]: %}...{% endif %}</p>
+                                <a class="btn btn-primary" href="{{ url_for('show_question', q_id=question.id) }}">Read more →</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Pagination-->
+                <nav aria-label="Pagination">
+                    <hr class="my-0" />
+                    <ul class="pagination justify-content-center my-4">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        {% for page in range(pages): %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=page+1) }}">{{ page + 1 }}</a></li>
+                        {% endfor %}
+                        <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=1) }}">Older</a></li>
+                    </ul>
+                </nav>
+            </div>
+            {% include 'widgets.html' %}
+        </div>
+    </div>
+{% endblock %}

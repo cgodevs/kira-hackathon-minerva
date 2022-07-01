@@ -1,0 +1,43 @@
+<!-- 2 widgets: Search and Categories-->
+<div class="col-lg-4" style="margin-top: 2.3em">
+    <!-- Search widget-->
+    <div class="card mb-4">
+        <div class="card-header">Search</div>
+        <div class="card-body">
+            <div class="input-group">
+                <form action="{{ url_for('search_tool') }}" method="post" style="margin: auto; width: 100%" class="row">
+                    <input name="search-keys" class="form-control" style="width: 80%" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                    <button class="btn btn-primary" style="width: 20%" id="button-search" type="submit">Go!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories widget-->
+    <div class="card mb-4">
+        <div class="card-header">Categories</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="list-unstyled mb-0">
+                        <li><a class="text-primary" href="{{ url_for('search', category='Career') }}">Career</a></li>
+                        <li><a class="text-primary" href="{{ url_for('search', category='Relationship') }}">Relationship</a></li>
+                        <li><a class="text-primary" href="{{ url_for('search', category='Fitness') }}">Fitness</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="list-unstyled mb-0">
+                        <li><a class="text-primary" href="{{ url_for('search', category='Pictures') }}">Pictures</a></li>
+                        <li><a class="text-primary" href="{{ url_for('search', category='Games') }}">Games</a></li>
+                        <li><a class="text-primary" href="{{ url_for('all_categories') }}">More...</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header"> Advice </div>
+        <div class="card-body">Don't post personal information and avoid meeting with other users in real life.</div>
+    </div>
+</div>

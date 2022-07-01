@@ -1,0 +1,25 @@
+{% extends 'my-profile.html' %}
+
+{% block action %}
+<div class="col-lg-8 column">
+
+        <h2 class="text-white bg-primary" style="text-align: center; padding: 5px; border: 1px solid white">My Questions</h2>
+        {% for question in questions %}
+        <!-- Question -->
+        <div class="card col-lg-12" style="margin: 5px auto 5px auto">
+            <div class="card-body">
+                <div class="small text-muted">{{ question.category }} | {{ question.date.strftime("%B %d, %Y") }}</div>
+                <h2 class="card-title h4">{{ question.title[:51] }}{% if question.title[50]: %}... {% endif %}</h2>
+                <p class="card-text">{{ question.body[:101] | safe }}{% if question.body[100]: %}... {% endif %}</p>
+                <div id="buttons" style="position: relative">
+                    <a class="btn btn-primary" href="{{ url_for('show_question', q_id=question.id) }}">Go to Question</a>
+                    <a class="text-danger" style="position: absolute; bottom: 0; right: 0" href="{{ url_for('delete_question', q_id=question.id) }}"> Delete</a>
+                </div>
+            </div>
+        </div>
+       {% endfor %}
+
+
+</div>
+
+{% endblock %}

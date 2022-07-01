@@ -76,6 +76,18 @@
   }
 }
 
+.botao-rosa {
+  background-color: var(--bs-pink) !important;
+}
+
+.nav-link:hover{
+  color: var(--bs-pink) !important;
+}
+
+.nav-link:onclick{
+  color: var(--bs-pink) !important;
+}
+
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);

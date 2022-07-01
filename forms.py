@@ -4,8 +4,7 @@ from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditorField
 
 
-CATEGORIES = ['Career', 'Relationship', 'Selfies', 'Fitness', 'Risks', 'Games',
-              'Programming', 'Writers', 'Pictures', 'Sexuality']
+CATEGORIES = [ "Gravidez", "Menstruação", "Saúde e Bem Estar", "Sexualiade", "Ciclo Menstrual", "Sororidade", "Questionando Estigmas", "Produtos Intimus", "Positivade Corporal", "Dicas de Moda"]
 
 
 class RegisterUserForm(FlaskForm):

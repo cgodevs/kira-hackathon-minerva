@@ -16,12 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = "SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db")  # 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -94,6 +94,79 @@ def home():
         return mainpage(1)
     return render_template("blank_start.html")
 
+@app.route('/comunidades')
+def comunidades():
+    if current_user.is_authenticated:
+        if db.session.query(Question).first():
+            pagination = 1
+            all_latest_questions = db.session.query(Question).order_by(Question.id.desc()).filter(date.today() - Question.date <= 10)
+            number_of_pages = int(ceil(all_latest_questions.count() / 6))
+            page_questions = all_latest_questions[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
+            most_upvoted_question = db.session.query(Question).order_by(Question.id.desc()).first()     # last record
+            for question in all_latest_questions:
+                if question.upvotes > most_upvoted_question.upvotes:
+                    most_upvoted_question = question    # featured question is the most upvoted in the last 10 days or the last ever record
+            return render_template("comunidades.html",
+                                   pagination=pagination,
+                                   featured_question=most_upvoted_question,
+                                   questions=page_questions,
+                                   pages=number_of_pages)
+    return render_template("comunidades.html")
+
+@app.route('/artigos')
+def artigos():
+    if current_user.is_authenticated:
+        if db.session.query(Question).first():
+            pagination = 1
+            all_latest_questions = db.session.query(Question).order_by(Question.id.desc()).filter(date.today() - Question.date <= 10)
+            number_of_pages = int(ceil(all_latest_questions.count() / 6))
+            page_questions = all_latest_questions[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
+            most_upvoted_question = db.session.query(Question).order_by(Question.id.desc()).first()     # last record
+            for question in all_latest_questions:
+                if question.upvotes > most_upvoted_question.upvotes:
+                    most_upvoted_question = question    # featured question is the most upvoted in the last 10 days or the last ever record
+            return render_template("artigos.html",
+                                   pagination=pagination,
+                                   featured_question=most_upvoted_question,
+                                   questions=page_questions,
+                                   pages=number_of_pages)
+    return render_template("artigos.html")
+
+@app.route('/recentes')
+def recentes():
+    if current_user.is_authenticated:
+        if db.session.query(Question).first():
+            pagination = 1
+            all_latest_questions = db.session.query(Question).order_by(Question.id.desc()).filter(date.today() - Question.date <= 10)
+            number_of_pages = int(ceil(all_latest_questions.count() / 6))
+            page_questions = all_latest_questions[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
+            most_upvoted_question = db.session.query(Question).order_by(Question.id.desc()).first()     # last record
+            for question in all_latest_questions:
+                if question.upvotes > most_upvoted_question.upvotes:
+                    most_upvoted_question = question    # featured question is the most upvoted in the last 10 days or the last ever record
+            return render_template("recentes.html",
+                                   pagination=pagination,
+                                   featured_question=most_upvoted_question,
+                                   questions=page_questions,
+                                   pages=number_of_pages)
+    return render_template("recentes.html")
+
+@app.route('/calendario')
+def calendario():
+    return render_template("about.html")
+
+@app.route('/diario')
+def diario():
+    return render_template("about.html")
+
+@app.route('/conhecimento')
+def conhecimento():
+    return render_template("about.html")
+
+@app.route('/shopping')
+def shopping():
+    return render_template("shopping.html")
+
 
 @app.route('/mainpage/<int:pagination>')
 def mainpage(pagination):
@@ -111,7 +184,7 @@ def mainpage(pagination):
                                    featured_question=most_upvoted_question,
                                    questions=page_questions,
                                    pages=number_of_pages)
-    return render_template("blank_start.html")
+    return render_template("full_homepage.html")
 
 
 @app.route('/about')

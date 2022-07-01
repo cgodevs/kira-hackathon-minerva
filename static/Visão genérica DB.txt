@@ -1,0 +1,51 @@
+[Comunidade] 
+T_COMUNIDADES:
+- cd_comunidade (PK, int)
+- cd_owner (FK_PK_Usuario)
+- ds_nome (varchar)
+- ds_bio
+
+T_POSTS: 
+- cd_post (PK, int)
+- FK_PK_Comunidade
+- cd_owner (FK_PK_Usuario)
+- ds_titulo (varchar)
+- ds_corpo (text)
+- dt_postagem (Timestamp)
+
+T_COMENTARIOS: 
+- cd_comentario (PK, int)
+- FK_PK_Usuario
+- FK_PK_Post
+- ds_corpo (text)
+- dt_postagem (TimeStamp)
+- n_upvotes (int)
+
+T_USUARIOS
+- cd_usuario (PK, int)
+- nm_completo (varchar)
+- nm_usuario (varchar, unique)
+- ds_email
+- ds_senha
+
+
+[Base de Conhecimento]
+T_TOPICOS_CONHECIMENTO 
+- pk (int)
+- nm_topico (Gravidez, Menstruação, Saúde e Bem Estar, Sexualiade, Ciclo Menstrual, Sororidade, Questionando Estigmas, Produtos Intimus) (varchar)
+- ds_topico (text)
+
+T_ARTIGOS = POSTS (Inserir em cada tabela o conteúdo de pelo menos 2 
+
+[Diário] 
+T_DIARIO
+- PK_FK_ Usuario
+- ds_titulo (VARCHAR, STANDARD "Dia %d de %m, %y - %hh:%nn)
+- ds_corpo (text)
+- dt_data (timestamp)
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-left: 10px; height: 80%">
+    <div style="margin: 20px auto 20px auto" class="row">
+        <h1 class="text-white" style="margin:0 auto 0 auto; text-align: center"> Página de {{ usuario.username }} </h1>
+        {% if current_user.username != usuario.username %}  <!-- Users may not send a DM to themselves -->
+        <a style="margin: 10px auto 0 auto; text-align: center; width: 50%" href="{{ url_for('send_dm', id_usuario=usuario.id) }}" >
+            <input  type="button" class="btn-sm btn-primary" name="new-dm" value="Send DM">
+        </a>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 10px">
+    <h4 class="text-white" style="margin: 40px auto 10px 20px">Todos os Posts</h4>
+    {% for post in usuario.posts %}
+        <a href="{{ url_for('show_post', q_id=post.id) }}">{{ post.titulo[:50] }}{% if post.titulo[50] %}... {% endif %}</a><br>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

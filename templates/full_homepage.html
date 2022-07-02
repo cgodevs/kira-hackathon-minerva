@@ -18,7 +18,7 @@
             <!-- Blog entries-->
             <div class="col-lg-8">
                 <!-- Featured blog post-->
-                <h2 class="text-white h4">Calendário</h2>                                      
+                <h2 class="text-white h4 espacado">Calendário</h2>                                      
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="small text-muted">
@@ -29,37 +29,72 @@
                                   <option value="escolher">Todos os tempos</option>
                                 </select>
                             </div>
-                            <img src="assets/chart.png" style="width: 100%; height: 700px">
+                            <img src="../static/assets/calendario.png" style="width: 100%; height: 300px">
                         </div>
                     </div>                          
             </div>
-            {% include 'widgets.html' %}
+
+            <div class="col-lg-4" style="margin-top: 2.3em">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Tem perguntas ou sente alguma coisa?</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form action="{{ url_for('busca') }}" method="post" style="margin: auto; width: 100%" class="row">
+                                <input name="search-keys" class="form-control" style="width: 80%" type="text" placeholder="Devo ter um artigo aqui!" aria-label="Enter search term..." aria-describedby="button-search" />
+                                <button class="btn btn-primary" style="width: 20%" id="button-search" type="submit">Ir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Onde as meninas estão</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="">
+                                <ul class="list-unstyled mb-0">
+                                    {%  for comunidade_recente in comunidades[:6] %}
+                                    <li><a class="text-primary" href="{{ url_for('busca_comunidade', id_comu=comunidade_recente.id) }}">{{ comunidade_recente.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="card mb-4">
+                    <div class="card-header"> Widget Opcional </div>
+                    <div class="card-body">Conteúdo Widget</div>
+                </div> -->
+            </div>
             <div class="col-lg-8">
                 <!-- Featured blog post-->
-                <h2 class="text-white h4">Kira deixou este artigo </h2>
+                <h2 class="text-white h4">Kira sugere este artigo </h2>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <div class="small text-muted">{{ featured_question.category }} | {{ featured_question.date.strftime("%B %d, %Y") }} | {{ featured_question.author.name }}</div>
-                        <h2 class="card-title">{{ featured_question.title[:91] }}{% if featured_question.title[90]: %}... {% endif %}</h2>
-                        <p class="card-text">{{ featured_question.body[:150] | safe }}{% if featured_question.body[150]: %}...{% endif %}</p>
-                        <a class="btn btn-primary" href="{{ url_for('show_question', q_id=featured_question.id) }}">Read more →</a>
+                        <div class="small text-muted"> Assunto </div>
+                        <h2 class="card-title">Título</h2>
+                        <p class="card-text">Assunto</p>
+                        <a class="btn btn-primary" href="">Ler Mais →</a>
                     </div>
-                </div>                
+                </div>
 
             </div>
-            <!-- 
             <div class="col-lg-4">
-                <h2 class="text-white h4">Featured</h2>
+                <!-- Featured blog post-->
+                <h2 class="text-white h4">Kira sugere este artigo </h2>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <div class="small text-muted">{{ featured_question.category }} | {{ featured_question.date.strftime("%B %d, %Y") }} | {{ featured_question.author.name }}</div>
-                        <h2 class="card-title">{{ featured_question.title[:91] }}{% if featured_question.title[90]: %}... {% endif %}</h2>
-                        <p class="card-text">{{ featured_question.body[:150] | safe }}{% if featured_question.body[150]: %}...{% endif %}</p>
-                        <a class="btn btn-primary" href="{{ url_for('show_question', q_id=featured_question.id) }}">Read more →</a>
+                        <div class="small text-muted"> Assunto </div>
+                        <h2 class="card-title">Título</h2>
+                        <p class="card-text">Assunto</p>
+                        <a class="btn btn-primary" href="">Ler Mais →</a>
                     </div>
-                </div>  
+                </div>
+
             </div>
-        -->
             
         </div>
     </div>

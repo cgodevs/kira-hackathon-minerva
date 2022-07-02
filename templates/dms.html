@@ -3,16 +3,16 @@
 {% block action %}
 <div class="col-lg-8 column">
 
-        <h2 class="text-white bg-primary" style="text-align: center; padding: 5px; border: 1px solid white">My DMs</h2>
-        {% for dm in current_user.received_dms %}
+        <h2 class="text-white bg-primary" style="text-align: center; padding: 5px; border: 1px solid white">Minhas DMs</h2>
+        {% for dm in current_user.dms_recebidas %}
         <!-- Question -->
         <div class="card col-lg-12" style="margin: 5px auto 5px auto">
           <div class="card-body">
-            <h5 class="card-title">From {{ dm.author }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ dm.date.strftime("%B %d, %Y") }}</h6>
-            <p class="card-text">{{ dm.text }}</p>
-            <a href="{{ url_for('delete_dm', dm_id=dm.id) }}" class="card-link">Delete</a>
-            <a href="{{ url_for('send_dm', username=dm.author)}}" class="card-link">Send DM back</a>
+            <h5 class="card-title">De {{ dm.autor }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ dm.data.strftime("%B %d, %Y") }}</h6>
+            <p class="card-text">{{ dm.mensagem }}</p>
+            <a href="{{ url_for('delete_dm', dm_id=dm.id) }}" class="card-link">Deletar</a>
+            <a href="{{ url_for('send_dm', username=dm.autor.username)}}" class="card-link">Retornar DM</a>
           </div>
         </div>
        {% endfor %}

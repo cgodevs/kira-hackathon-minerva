@@ -8,10 +8,18 @@
           </div>
           <div class="card-body">
             <h2 class="card-title h2">Seus pontos 💋</h2>
-            <h4 class="card-text h4">17 pontos</h4>
-            <p> Valor ainda não permite gerar cupons ou efetivar assinatura do clube para o próximo mês </p>
-            <a class="btn btn-success disabled" href="">Trocar pontos</a>
-            <a class="btn btn-dark disabled" href="">Como gerar pontos?</a>
+            <h4 class="card-text h4">{{ current_user.pontos }}</h4>
+              {% if current_user.pontos >= 100 %}
+                  <p> Você pode trocar seus pontos por:  </p>
+                  <p> 100 pontos - Curso de maquiagem  </p>
+                  <p> 200 pontos - Consultoria de estilo  </p>
+                  <p> 300 pontos -  Voucher de R$ 20 reais para produtos Intimus  </p>                  
+                  <a class="btn btn-success disabled" href="">Trocar pontos</a>
+                  <a class="btn btn-dark disabled" href="">Como gerar pontos?</a>   
+               {% else %}
+                  <p> Valor ainda não permite gerar cupons ou efetivar assinatura do clube para o próximo mês </p>                   
+              {% endif %}
+
            </div>
     </div>
 </div>

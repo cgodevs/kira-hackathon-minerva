@@ -43,6 +43,7 @@ class Usuario(UserMixin, db.Model): #PAI
     username = db.Column(db.String(100), unique=True) 
     email = db.Column(db.String(200), unique=True) 
     password = db.Column(db.String(100)) 
+    pontos = db.Column(db.Integer)
     # ********************** Relações com outras tabelas ****************
     posts = relationship("Post", back_populates="autor_post") 
     comentarios_usuario = relationship("Comentario", back_populates="autor_comentario")
@@ -276,7 +277,8 @@ def register():
             nome_completo = form_registro.nomecompleto_form.data,
             username=form_registro.username_form.data,
             email=form_registro.email_form.data,
-            password=generate_password_hash(form_registro.senha_form.data, method='pbkdf2:sha256', salt_length=8)            
+            password=generate_password_hash(form_registro.senha_form.data, method='pbkdf2:sha256', salt_length=8),
+            pontos=0       
         )
         db.session.add(novo_usuario)
         db.session.commit()
@@ -340,6 +342,7 @@ def novo_post():
                     eh_artigo=False)
         db.session.add(post)
         db.session.commit()
+        current_user.pontos += 30
         return redirect(url_for('comunidades', base='recentes'))
     return render_template('novo-post.html', form=form_post)
 
@@ -364,8 +367,11 @@ def nova_comunidade():
             id_usuario=current_user.id,
             id_comunidade=comunidade_nova.id
         )
+
         db.session.add(nova_relacao)
         db.session.commit()
+        #usuario_logado = Usuario.query.get(current_user.id)
+        #usuario_logado.pontos += 35
         return redirect(url_for('comunidades', base='recentes')) # TODO Retornar para a página de recentes desta comunidade
     return render_template("criar-comunidade.html", form=nova_comu_form)
 

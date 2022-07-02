@@ -27,9 +27,9 @@
                     {% if current_user.username == comentario.autor_comentario.username %}
                         <a href="{{ url_for('delete_comment', q_id=post.id, comment_id=comentario.id) }}" style="text-decoration: none; color: red">×</a>
                     {% endif %}
-                    [<a href="{{ url_for('user_page', id_usuario==comentario.autor_comentario.id) }}">
+                    <a href="{{ url_for('user_page', id_usuario=comentario.autor_comentario.id) }}">
                     {{ comentario.autor_comentario.username }}
-                    </a>] ({{ comentario.data }}): {{ comentario.mensagem | safe }}</p>
+                    </a> ({{ comentario.data }}): {{ comentario.mensagem | safe }}</p>
               </div>
             </div>
         {% endfor %}

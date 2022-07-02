@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="py-5 bg-light border-bottom mb-4" style="height: 70%">
+
     <div class="container">
         <div class="text-center my-5">
             <h1 class="fw-bolder">Diário</h1>
             <p class="italic" style="margin-top: 2px">Há razões que a Razão desconhece...</p>
         </div>
     </div>
-</div>
+
 
 <div class="container" style="height: 100%; margin: 20px auto 150px auto;">
         <div class="row">
@@ -16,14 +16,10 @@
 
             <!-- My Profile Info Options -->
             <div class="card" style="width: 100%; margin-bottom: 10px">
-              <div class="card-header bg-secondary" style="  font-weight: bold; text-align: center">   Informações do Perfil    </div>
+              <div class="card-header bg-dark text-white" style="  font-weight: bold; text-align: center">   Suas Informações    </div>
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='reset-pw') }}">Trocar Senha</a></li>
-                    <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='reset-address') }}">Trocar E-mail</a></li>
-                    <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='posts-de-usuario') }}">Meus Posts</a></li>
                     <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='dms') }}">Minhas DMs</a></li>
                     <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='pontos') }}">Meus Pontos</a></li>
-                    <li class="list-group-item"><a href="{{ url_for('minhas_comunidades_criadas')}}">Comunidades Criadas</a></li>
                   </ul>
               </div>
             </div>

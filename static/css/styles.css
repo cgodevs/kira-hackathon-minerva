@@ -83,6 +83,7 @@
 
 html, body{
   font-family: "Kotex-Light", "Kotex-Bold", "Montserrat", "Arial", "Calibri";
+  height: 100%;
 }
 .italic{
   font-style: italic !important;
@@ -93,10 +94,26 @@ html, body{
   box-sizing: border-box;
 }
 
-.img-inicio{
+#img-inicio{
   position: absolute;
   right: 0;
 }
+
+@media only screen and (max-width: 568px) {
+  #img-inicio {
+    position: absolute;
+    bottom: 0;
+  }
+}
+@media only screen and (max-width: 994px) {
+  #img-inicio {
+    position: absolute;
+    width: 50vw;
+    height: 50vw;
+    bottom: 0;
+  }
+}
+
 
 body, html {
   background-image: linear-gradient(180deg, #FF00BB, black);

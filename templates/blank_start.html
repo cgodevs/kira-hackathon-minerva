@@ -4,12 +4,14 @@
     <!-- Page header with logo and tagline-->
     <header class="py-5 bg-light border-bottom mb-4" style="height: 80%">
         <div class="container row">
-            <img src="../static/assets/meninas-inicio.png" class="col-lg-4 img-inicio">
+            <img src="../static/assets/meninas-inicio.png" class="col-lg-4" id="img-inicio">
             <div class="text-center  col-lg-8">
                 <h1 class="fw-bolder">Bem-vinde à Kira!!</h1>
-                <p class="lead mb-0">Estou aqui para te ajudar como se fosse a sua irmã mais velha ou a sua melhor amiga, você pode pedir conselhos, satisfazer curiosidades e contar as suas experiências!</p>
+                <p class="lead mb-0">Estou aqui para te ajudar como se fosse a sua irmã mais velha ou a sua melhor amiga, você pode pedir conselhos, satisfazer curiosidades e contar as suas experiências. </p>
+                <br>
                 <p class="lead mb-0">Aqui, somos a comunidade “Todas Nós Já Passamos”, um espaço acolhedor, confiável e inclusivo para troca de informações, e ainda melhor que toda esta interação é recompensada por um sistema de pontos por alguns mimos.</p>
                 {% if not current_user.is_authenticated %}
+                <br>
                 <p class="font-weight-bold" style="margin-top: 2px"><em>Comece se registrando para aproveitar essa experiência!</em></p>
                 {% endif %}
             </div>

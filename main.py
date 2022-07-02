@@ -16,12 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' #os.environ.get("DATABASE_URL", "sqlite:///database.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db") #'sqlite:///database.db' #
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -103,7 +103,7 @@ class Comentario(db.Model):
 class DirectMessage(db.Model):
     __tablename__ = "dms"
     id = db.Column(db.Integer, primary_key=True)
-    id_recipiente = db.Column(db.Integer, db.ForeignKey("usuarios.id"))    
+    id_recipiente = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
     autor = db.Column(db.String(250), nullable=False)
     data = db.Column(db.Date, nullable=False)
     mensagem = db.Column(db.Text, nullable=False)
@@ -424,21 +424,20 @@ def user_page(id_usuario):
 
 @app.route('/send-dm/<id_usuario>', methods=['GET', 'POST'])
 def send_dm(id_usuario):
-    print(id_usuario)
-    print(id_usuario)
-    usuario = Usuario.query.get(id_usuario)
+
+    usuario_recebendo = Usuario.query.get(id_usuario)
     form_dm = FormDM()
     if form_dm.validate_on_submit():
         mensagem = form_dm.corpo_form.data
-        new_dm = DirectMessage(recipiente=usuario,
-                               id_recipiente=usuario.id,
+        new_dm = DirectMessage(recipiente=usuario_recebendo,
+                               id_recipiente=usuario_recebendo.id,
                                autor=current_user,
                                data=date.today(),   #.strftime("%B %d, %Y")
                                mensagem=mensagem)
         db.session.add(new_dm)
         db.session.commit()
-        return render_template('perfil-usuario.html', usuario=usuario)
-    return render_template('send-dm.html', usuario=usuario, form=form_dm)
+        return render_template('perfil-usuario.html', usuario=usuario_recebendo)
+    return render_template('send-dm.html', usuario=usuario_recebendo, form=form_dm)
 
 
 @app.route("/delete-dm/<int:dm_id>")

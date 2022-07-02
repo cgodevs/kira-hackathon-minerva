@@ -158,11 +158,17 @@ def comunidades(base):
                     most_upvoted_post = post    # mais votado nos últimos 10 dias ou é o último registro disponível
             print(current_user.id)
             participacoes_usuario = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
-
             comunidades_do_usuario = [Comunidade.query.get(participacao.id_comunidade) for participacao in participacoes_usuario]
+
+            if base == "descubra":
+                todas = db.session.query(Comunidade).filter_by().all()
+            else:
+                todas = None
+
 
             return render_template("comunidades.html",
                                    base=base,
+                                   todas_comunidades=todas,
                                    pagination=pagination,
                                    featured_post=most_upvoted_post,
                                    posts=page_posts,
@@ -503,7 +509,7 @@ def busca():
 
 
 @app.route("/buscar/todas-comunidades")
-def todas_comunidades():
+def todas_comunidades():  # TODO ?!!
     return render_template('todas-comunidades.html', comunidades=COMUNIDADES)
 
 

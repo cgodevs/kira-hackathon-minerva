@@ -89,11 +89,21 @@
   background-color: var(--bs-pink) !important;
 }
 
-.nav-link:hover{
+.link-topo:hover{
   color: var(--bs-pink) !important;
 }
 
-.nav-link:onclick{
+.abas-comunidades {
+  margin-top: 1.2em;
+  margin-bottom: 0.8em;
+}
+
+.aba_comunidade:hover{
+  background-color: black !important;
+  color: var(--bs-pink) !important;
+}
+
+.nav-link-topo:onclick{
   color: var(--bs-pink) !important;
 }
 

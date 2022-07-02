@@ -24,12 +24,12 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('home') }}">🏠</a></li>
-                        <li class="nav-item"><a class="nav-link disabled" href="{{ url_for('shopping') }}">🛒</a></li>
-                        <li class="nav-item"><a class="nav-link disabled" href="{{ url_for('conhecimento') }}">Conhecimento</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('comunidades', base="featured") }}">Comunidades</a></li>
+                        <li class="nav-item"><a class="nav-link link-topo text-white" href="{{ url_for('home') }}">🏠</a></li>
+                        <li class="nav-item"><a class="nav-link link-topo disabled" href="{{ url_for('shopping') }}">🛒</a></li>
+                        <li class="nav-item"><a class="nav-link link-topo disabled" href="{{ url_for('conhecimento') }}">Conhecimento</a></li>
+                        <li class="nav-item"><a class="nav-link link-topo text-white" href="{{ url_for('comunidades', base="featured") }}">Comunidades</a></li>
                         {% if current_user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link disabled" href="{{ url_for('conhecimento') }}">Calendário</a></li>
+                        <li class="nav-item"><a class="nav-link link-topodisabled" href="{{ url_for('conhecimento') }}">Calendário</a></li>
                         <li class="nav-item">
                             <div class="btn-group">
                                 <button type="button" class="btn botao-rosa dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,10 +51,10 @@
                         </li>
                         {% endif %}
                         {% if not current_user.is_authenticated %}
-                        <li class="nav-item nav-link">
+                        <li class="nav-item link-topo nav-link">
                             <a href="{{ url_for('register') }}" ><input style="" type="button" class="btn-primary btn-sm" name="new-question" value="Registre-se"></a>
                         </li>
-                        <li class="nav-item nav-link">
+                        <li class="nav-item link-topo nav-link">
                             <a href="{{ url_for('login') }}" ><input style="" type="button" class="btn-warning btn-sm" name="new-question" value="Entrar"></a>
                         </li>
                         {% endif %}

@@ -75,7 +75,16 @@
     scroll-behavior: smooth;
   }
 }
+.espaco-botoes {
+  margin: 0.5em;
+}
+.espacado{
+  margin-top: 2em
+}
 
+.sem_decoracao{
+  text-decoration: none !important;
+}
 .botao-rosa {
   background-color: var(--bs-pink) !important;
 }

@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container" style="height: 100%; margin: 20px auto 150px auto;">
+<div class="py-5 bg-light border-bottom mb-4" style="height: 70%">
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="fw-bolder">Diario</h1>
+            <p class="lead mb-0">This is a Flask-made simple website to ask and answer questions</p>
+            <p class="lead" style="margin-top: 2px">See my github at <a href="https://github.com/cgodevs">@cgodevs</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="height: 100%; margin: 20px auto 150px auto;">
         <div class="row">
             <div class="col-lg-4">
 
@@ -14,17 +24,32 @@
                     <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='posts-de-usuario') }}">Meus Posts</a></li>
                     <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='dms') }}">Minhas DMs</a></li>
                     <li class="list-group-item"><a href="{{ url_for('my_profile', menu_action='pontos') }}">Meus Pontos</a></li>
-                    <li class="list-group-item"><a href="{{ url_for('diario')}}">Meu Diário</a></li>
                     <li class="list-group-item"><a href="{{ url_for('minhas_comunidades_criadas')}}">Comunidades Criadas</a></li>
                   </ul>
               </div>
             </div>
+        <div class="col-lg-8 column">
 
-            <!-- Menu Action-->
-            {% block action %}
-            {% endblock %}
-
+         <div class="card col-lg-4">
+          <button type="button" class="btn botao-rosa">
+              <a class="sem_decoracao" href="{{ url_for("escrever_diario") }}">Escrever ✍️</a>
+          </button>
         </div>
-    </div>
 
+        {% for entrada in current_user.entradas_usuario %}
+        <!-- Entradas -->
+        <div class="card col-lg-12" style="margin: 5px auto 5px auto">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">{{ entrada.data.strftime("%B %d, %Y") }}</h6>
+            <h5 class="card-text card-header">{{ entrada.titulo }}</h5>
+            <p class="card-text" >{{ entrada.texto | safe }}</p>
+          </div>
+        </div>
+        {% endfor %}
+</div>
+
+
+
+
+</div>
 {% endblock %}

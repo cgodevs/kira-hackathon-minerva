@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<div >
+    <div id="post-display" class="container"">
+        <div class="card">
+          <h5 class="card-header">{{ post.titulo }}</h5>
+          <div class="card-body blockquote mb-0">
+            <p class="card-text">{{ post.corpo | safe}}</p>
+            <footer class="blockquote-footer" style="margin-top: 5%">
+                <a href="{{ url_for('user_page', id_usuario=post.autor_post.id) }}">{{ post.autor_post.username }}</a>
+                | {{ post.data }} |
+                <strong>{{ post.upvotes }}</strong> upvotes |
+                <a href="{{ url_for('upvote_post', q_id=post.id) }}" class="btn btn-light" style="float: right">Joinha 👍</a>
+            </footer>
+          </div>
+        </div>
+    </div>
+    <div id="comments" class="container" style="margin: 1% auto">
+        <h4 class="text-white container" style="margin: 20px 0 10px 0">Comentários</h4>
+        {% for comentario in post.comentarios %}
+            <div class="card bg-light mb-3">
+              <div class="card-body">
+                <p class="card-text">
+                    {% if current_user.username == comentario.autor_comentario.username %}
+                        <a href="{{ url_for('delete_comment', q_id=post.id, comment_id=comentario.id) }}" style="text-decoration: none; color: red">×</a>
+                    {% endif %}
+                    [<a href="{{ url_for('user_page', id_usuario==comentario.autor_comentario.id) }}">
+                    {{ comentario.autor_comentario.username }}
+                    </a>] ({{ comentario.data }}): {{ comentario.mensagem | safe }}</p>
+              </div>
+            </div>
+        {% endfor %}
+        <div style="width: 60%; margin: 0 auto; text-align: center">
+            {{ ckeditor.load(pkg_type="basic") }}
+            {{ ckeditor.config(name='body') }}
+            {{ wtf.quick_form(form_comentario, novalidate=True, button_map={"submit": "success btn-sm"}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

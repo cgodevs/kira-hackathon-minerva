@@ -4,7 +4,7 @@
 <div class="col-lg-8">
     <div class="card">
           <div class="card-header" style="text-align: center">
-                Reset Password
+                Trocar Senha
           </div>
           <div class="card-body">
               <form action="{{ url_for('my_profile', menu_action='reset-pw') }}" method="post">
@@ -15,11 +15,11 @@
                     {% endfor %}
                   {% endif %}
               {% endwith %}
-                <h5 class="card-title" style="margin:0">Old Password</h5>
+                <h5 class="card-title" style="margin:0">Senha Antiga</h5>
                     <input name="old-pw" type="password" style="width:70%"><br><br>
-                <h5 class="card-title" style="margin:0">New Password</h5>
+                <h5 class="card-title" style="margin:0">Nova Senha</h5>
                     <input name="new-pw" type="password" style="width:70%"><br><br>
-                <button type="submit" href="#" class="btn btn-dark btn-sm">Reset</button>
+                <button type="submit" href="#" class="btn btn-dark btn-sm">Definir</button>
               </form>
           </div>
     </div>

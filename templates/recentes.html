@@ -1,127 +1,30 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container">
-<!-- INICIO ABAS -->
-    <!-- Tabs navs -->
-<ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link"
-        id="ex1-tab-1"
-        data-mdb-toggle="tab"
-        href="{{ url_for('artigos') }}"
-        role="tab"
-        aria-controls="ex1-tabs-1"
-        aria-selected="true"
-        >Artigos</a
-      >
-    </li>
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link "
-        id="ex1-tab-2"
-        data-mdb-toggle="tab"
-        href="{{ url_for('comunidades') }}"
-        role="tab"
-        aria-controls="ex1-tabs-2"
-        aria-selected="false"
-        >Featured</a
-      >
-    </li>
-    <li class="nav-item" role="presentation">
-      <a
-        class="nav-link active"
-        id="ex1-tab-3"
-        data-mdb-toggle="tab"
-        href="#ex1-tabs-3"
-        role="tab"
-        aria-controls="{{ url_for('recentes') }}"
-        aria-selected="false"
-        >Recentes</a
-      >
-    </li>
-</ul>
-  <!-- Tabs navs -->  
-  <!-- Tabs content -->
-  <div class="tab-content" id="ex1-content">
-    <div
-      class="tab-pane fade show active"
-      id="ex1-tabs-1"
-      role="tabpanel"
-      aria-labelledby="ex1-tab-1"
-    >
-      Tab 1 content
-    </div>
-    <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
-      Tab 2 content
-    </div>
-    <div class="tab-pane fade" id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
-      Tab 3 content
-    </div>
-  </div>
-  <!-- Tabs content -->
-<!-- FIM ABAS -->
-
-  
+<div class="col-lg-8">
+    <!-- -->
+    <h2 class="text-white h4">Recentes</h2>
     <div class="row">
-    <!--Menu lateral -->
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-          <span class="fs-4">Sua Comunidades</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-              Comunidade 1
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              Comunidade 2
-            </a>
-          </li>          
-        </ul>
-        <hr>
-      </div>
-    <!-- Fim do Menu lateral -->
-    
-    
-        <!-- Blog entries-->
-        <div class="col-lg-8">
-            <!-- -->
-            <h2 class="text-white h4">Recentes</h2>
-            <div class="row">
-                {% for question in questions: %}
-                <div class="col-lg-12">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="small text-muted">{{ question.category }} | {{ question.date.strftime("%B %d, %Y") }} | {{ question.author.name }}</div>
-                            <h2 class="card-title h4">{{ question.title[:51] }}{% if question.title[50]: %}... {% endif %}</h2>
-                            <p class="card-text">{{ question.body[:90] | safe }}{% if question.body[90]: %}...{% endif %}</p>
-                            <a class="btn btn-primary" href="{{ url_for('show_question', q_id=question.id) }}">Read more →</a>
-                        </div>
-                    </div>
+        {% for post in posts %}
+        <div class="col-lg-12">
+            <!-- Blog post-->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="small text-muted">{{ post.comunidade.nome }} | {{ post.data.strftime("%B %d, %Y") }} | {{ post.autor_post.username }}</div>
+                    <h2 class="card-title h4">{{ post.titulo[:51] }}{% if post.titulo[50]: %}... {% endif %}</h2>
+                    <p class="card-text">{{ post.corpo[:90] | safe }}{% if post.corpo[90]: %}...{% endif %}</p>
+                    <a class="btn btn-primary" href="{{ url_for('show_post', q_id=post.id) }}">Ler mais →</a>
                 </div>
-                {% endfor %}
             </div>
-            <!-- Pagination-->
-            <nav aria-label="Pagination">
-                <hr class="my-0" />
-                <ul class="pagination justify-content-center my-4">
-                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                    {% for page in range(pages): %}
-                        <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=page+1) }}">{{ page + 1 }}</a></li>
-                    {% endfor %}
-                    <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=1) }}">Older</a></li>
-                </ul>
-            </nav>
         </div>
+        {% endfor %}
     </div>
+    <!-- Pagination-->
+    <nav aria-label="Pagination">
+        <hr class="my-0" />
+        <ul class="pagination justify-content-center my-4">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Mais Novos</a></li>
+            {% for page in range(pages) %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=page+1) }}">{{ page + 1 }}</a></li>
+            {% endfor %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('mainpage', pagination=1) }}">Mais Antigos</a></li>
+        </ul>
+    </nav>
 </div>
-{% endblock %}

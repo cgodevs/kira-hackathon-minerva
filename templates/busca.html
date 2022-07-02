@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-left: 10px; height: 100%">
+    <div style="margin-top: 10px">
+    <h4 class="text-white" style="margin: 40px auto 10px 20px"> Posts </h4>
+    {% if posts.count() == 0: %}
+        <p class="text-white" style="margin-left: 2%">Nenhum post encontrado para a busca feita</p>
+    {% endif %}
+    {% for post in posts: %}
+        <div class="card col-lg-12" style="margin: 5px auto 5px auto">
+            <div class="card-body">
+                <div class="small text-muted">{{ post.autor_post.name }} | {{ post.data.strftime("%B %d, %Y") }}</div>
+                <h2 class="card-title h4">{{ post.titulo[:51] }}{% if post.titulo[50]: %}... {% endif %}</h2>
+                <p class="card-text">{{ post.corpo[:101] | safe }}{% if post.corpo[100]: %}... {% endif %}</p>
+                <div id="buttons" style="position: relative">
+                    <a class="btn btn-dark" href="{{ url_for('show_post', q_id=post.id) }}">Ver Post</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

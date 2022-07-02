@@ -1,0 +1,16 @@
+{% extends 'my-profile.html' %}
+
+{% block action %}
+<div class="col-lg-8 column">
+        <h2 class="text-white bg-primary" style="text-align: center; padding: 5px; border: 1px solid white">Minhas Comunidades</h2>
+            {% for comunidade in comunidades_criadas %}
+                <a href=""><input style="" type="button" class="espaco-botoes btn-warning btn-sm" value={{ comunidade.nome }}></a>
+            {% endfor %}
+            {% if not comunidades_criadas %}
+                <p class="text-white" style="margin-left: 2%">Nenhuma comunidade criada ainda</p>
+            {% endif %}
+            </div>
+{% endblock %}
+
+
+

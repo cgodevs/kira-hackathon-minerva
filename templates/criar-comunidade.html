@@ -5,8 +5,7 @@
     <header class="py-5 bg-light border-bottom mb-4">
         <div class="container">
             <div class="text-center my-5">
-                <h1 class="fw-bolder">Faça seu Registro</h1>
-                <p class="lead mb-0">Conheça a Kira!</p>
+                <h1 class="fw-bolder">Nova Comunidade</h1>
             </div>
         </div>
     </header>
@@ -20,7 +19,9 @@
                 {% endfor %}
               {% endif %}
             {% endwith %}
-           {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "success"}) }}
+            {{ ckeditor.load(pkg_type="basic") }}
+            {{ ckeditor.config(name='corpo') }}
+            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary btn-sm"}) }}
               <br>
         </div>
     </div>

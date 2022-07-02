@@ -4,3 +4,6 @@
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-blog-home/blob/master/LICENSE)
 */
 
+function aba_fica_ativa(id){
+    document.getElementById(id).className = "nav-link active"
+}

@@ -42,7 +42,8 @@ class Usuario(UserMixin, db.Model): #PAI
     nome_completo = db.Column(db.String(200)) 
     username = db.Column(db.String(100), unique=True) 
     email = db.Column(db.String(200), unique=True) 
-    password = db.Column(db.String(100)) 
+    password = db.Column(db.String(100))
+    pontos = db.Column(db.Integer)
     # ********************** Relações com outras tabelas ****************
     posts = relationship("Post", back_populates="autor_post") 
     comentarios_usuario = relationship("Comentario", back_populates="autor_comentario")
@@ -162,6 +163,8 @@ def comunidades(base):
 
             if base == "descubra":
                 todas = db.session.query(Comunidade).filter_by().all()
+            if base == "featured":
+                todas = db.session.query(Post).order_by(Post.upvotes.desc()).filter_by(upvote_post > 0)
             else:
                 todas = None
 
@@ -176,7 +179,8 @@ def comunidades(base):
                                    comunidades=comunidades_do_usuario)
     todas_comunidades = db.session.query(Comunidade).all()
     return render_template("comunidades.html", comunidades=todas_comunidades)
- 
+
+def contaPo
 
 @app.route('/artigos')
 def artigos():
@@ -234,6 +238,7 @@ def escrever_diario():
         db.session.add(nova_entrada)
         db.session.commit()
         return diario()
+
     return render_template("escrever-diario.html", form=form_entrada_diario)
 
 @app.route('/conhecimento')
@@ -276,7 +281,8 @@ def register():
             nome_completo = form_registro.nomecompleto_form.data,
             username=form_registro.username_form.data,
             email=form_registro.email_form.data,
-            password=generate_password_hash(form_registro.senha_form.data, method='pbkdf2:sha256', salt_length=8)            
+            password=generate_password_hash(form_registro.senha_form.data, method='pbkdf2:sha256', salt_length=8),
+            pontos=0
         )
         db.session.add(novo_usuario)
         db.session.commit()
@@ -338,8 +344,10 @@ def novo_post():
                     id_comunidade=id_comunidade,
                     corpo=corpo,
                     eh_artigo=False)
+
         db.session.add(post)
         db.session.commit()
+        current_user.pontos += 30;
         return redirect(url_for('comunidades', base='recentes'))
     return render_template('novo-post.html', form=form_post)
 
@@ -366,6 +374,7 @@ def nova_comunidade():
         )
         db.session.add(nova_relacao)
         db.session.commit()
+        current_user.pontos += 35;
         return redirect(url_for('comunidades', base='recentes')) # TODO Retornar para a página de recentes desta comunidade
     return render_template("criar-comunidade.html", form=nova_comu_form)
 
@@ -457,6 +466,7 @@ def show_post(q_id):
                                   parent_post=db_post)
             db.session.add(novo_comentario)
             db.session.commit()
+            current_user.pontos += 5;
         return render_template('post.html', post=db_post, form_comentario=form_comentario)
     else:
         return abort(404)

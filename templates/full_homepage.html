@@ -11,10 +11,19 @@
             </div>
         </div>
     </header>
-    <!-- Page content-->
+ Page content-->
+{% if current_user.is_authenticated %}
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="kira_hackathon"
+      agent-id="a74d9a62-7524-4368-b492-ab41c47f2fd9"
+      language-code="pt-br"
+    ></df-messenger>
+{% endif %}
 
-    <div class="container">
-        <div class="row">
+    <div class="container corpo-total">
+        <div class="row corpo-total">
             <!-- Blog entries-->
             <div class="col-lg-8">
                 <!-- Featured blog post-->
@@ -84,13 +93,13 @@
             </div>
             <div class="col-lg-4">
                 <!-- Featured blog post-->
-                <h2 class="text-white h4">Kira sugere este artigo </h2>
+                <h2 class="text-white h4">Notícias Importantes</h2>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <div class="small text-muted"> Assunto </div>
+                        <div class="small text-muted"> Tópico </div>
                         <h2 class="card-title">Título</h2>
-                        <p class="card-text">Assunto</p>
-                        <a class="btn btn-primary" href="">Ler Mais →</a>
+                        <p class="card-text">Texto</p>
+                        <a class="" href="">Ler Mais</a>
                     </div>
                 </div>
 

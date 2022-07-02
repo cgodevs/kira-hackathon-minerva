@@ -64,10 +64,54 @@
   --bs-body-bg: #fff;
 }
 
+@font-face {
+  font-family: Kotex-Bold;
+  src: url('../assets/fonts/Kotex-Bold.woff2') format('woff2'); /* Super Modern Browsers */
+}
+@font-face {
+  font-family: Kotex-Bold;
+  src: url('../assets/fonts/Kotex-Bold.woff') format('woff'); /* Pretty Modern Browsers */
+}
+@font-face {
+  font-family: Kotex-Light;
+  src: url('../assets/fonts/Kotex-Light.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: Kotex-Bold;
+  src: url('../assets/fonts/Kotex-Bold.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+html, body{
+  font-family: "Kotex-Light", "Kotex-Bold", "Montserrat", "Arial", "Calibri";
+}
+.italic{
+  font-style: italic !important;
+}
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+.img-inicio{
+  position: absolute;
+  right: 0;
+}
+
+body, html {
+  background-image: linear-gradient(180deg, #FF00BB, black);
+}
+
+#post-display{
+  margin-top: 1.2em;
+}
+
+.corpo-total{
+  height: 100%;
+}
+
+.botoes-ingresso, .botao-rosa{
+  background-color: #FF00BB !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -85,9 +129,7 @@
 .sem_decoracao{
   text-decoration: none !important;
 }
-.botao-rosa {
-  background-color: var(--bs-pink) !important;
-}
+
 
 .link-topo:hover{
   color: var(--bs-pink) !important;

@@ -16,12 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db")  # 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' #os.environ.get("DATABASE_URL", "sqlite:///database.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -425,6 +425,7 @@ def user_page(id_usuario):
 @app.route('/send-dm/<id_usuario>', methods=['GET', 'POST'])
 def send_dm(id_usuario):
     print(id_usuario)
+    print(id_usuario)
     usuario = Usuario.query.get(id_usuario)
     form_dm = FormDM()
     if form_dm.validate_on_submit():
@@ -481,7 +482,7 @@ def delete_post(q_id):
     post_para_deletar = Post.query.get(q_id)
     db.session.delete(post_para_deletar)
     db.session.commit()
-    return my_profile('sent-posts')
+    return my_profile('posts-de-usuario')
 
 
 @app.route("/delete-comment/<int:q_id>/<int:comment_id>")

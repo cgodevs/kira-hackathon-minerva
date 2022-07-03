@@ -14,8 +14,17 @@ Para criar um espaço acolhedor, seguro e confiável que usuárias de Kira e de 
 
 # Ilustrações das Features 
 
+##### Kira conversa com a usuária
+https://user-images.githubusercontent.com/69640514/177045457-da58dde1-6d7d-4587-8e06-62cdce752d07.mp4
 
+#### Registro em diário
+https://user-images.githubusercontent.com/69640514/177045535-40d11f72-cdb0-470e-aaa1-59420b6a6c49.mp4
 
+##### Usuária pode criar sua própria comunidade [incrementa pontuação]
+https://user-images.githubusercontent.com/69640514/177045541-e8287613-39b8-4a49-bdfd-f9ac6d75b146.mp4
+
+#### Criação de Post [incrementa pontuação]
+https://user-images.githubusercontent.com/69640514/177045548-d555fe21-0b07-4bf3-8401-4f9441a6809b.mp4
 
 # Descrição completa
 

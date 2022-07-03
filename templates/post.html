@@ -33,11 +33,13 @@
               </div>
             </div>
         {% endfor %}
+        {% if current_user.is_authenticated %}
         <div style="width: 60%; margin: 0 auto; text-align: center">
             {{ ckeditor.load(pkg_type="basic") }}
             {{ ckeditor.config(name='body') }}
             {{ wtf.quick_form(form_comentario, novalidate=True, button_map={"submit": "success btn-sm"}) }}
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@
 <div style="margin-left: 10px; height: 80%">
     <div style="margin: 20px auto 20px auto" class="row">
         <h1 class="text-white" style="margin:0 auto 0 auto; text-align: center"> Página de {{ usuario.username }} </h1>
-        {% if current_user.username != usuario.username %}  <!-- Users may not send a DM to themselves -->
+        {% if current_user.username != usuario.username and current_user.is_authenticated %}  <!-- Users may not send a DM to themselves -->
         <a style="margin: 10px auto 0 auto; text-align: center; width: 50%" href="{{ url_for('send_dm', id_usuario=usuario.id) }}" >
             <input  type="button" class="btn-sm btn-primary" name="new-dm" value="Send DM">
         </a>

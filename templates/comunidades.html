@@ -60,32 +60,32 @@
 </ul>
   <!-- Tabs navs -->
 <!-- FIM ABAS -->
-  
     <div class="row">
-    <!--Menu lateral -->
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <svg class="" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-           {% if current_user.is_authenticated %}
-          <span class="fs-4">Suas Comunidades</span>
-           {% else %}
-          <span class="fs-4">Últimas Comunidades</span>
-           {% endif %}
-        </a>
-
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-           {% for comunidade in comunidades[:10] %}
-          <li class="nav-item">
-            <a href="#" class="nav-link" aria-current="page">
-                {{ comunidade.nome }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-        <hr>
+    <!-- Menu lateral -->
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Todas as Suas Comunidades
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        {% if current_user.is_authenticated %}
+              <span class="fs-4">Suas Comunidades</span>
+               {% else %}
+              <span class="fs-4">Últimas Comunidades</span>
+               {% endif %}
+              <ul class="nav nav-pills flex-column mb-auto">
+               {% for comunidade in comunidades[:10] %}
+              <li class="nav-item">
+                <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
+                    {{ comunidade.nome }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
       </div>
-    <!-- Fim do Menu lateral -->
+    </div>
+
 
    <!-- Seções de Artigos -->
     {% if base == 'featured'%}

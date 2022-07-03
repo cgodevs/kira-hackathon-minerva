@@ -16,12 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' #os.environ.get("DATABASE_URL", "sqlite:///database.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -506,9 +506,12 @@ def busca_comunidade(id_comu: int):
     all_category_posts = db.session.query(Post) \
         .filter_by(comunidade=comunidade_escolhida) \
         .order_by(Post.id.desc())
+    todas = db.session.query(Comunidade).filter_by().all()
+
     return render_template('posts-comunidade.html',
                            posts=all_category_posts,
-                           comunidade=comunidade_escolhida)
+                           comunidade=comunidade_escolhida,
+                           comunidades=todas)
 
 
 @app.route("/busca/por-palavras", methods=['GET', 'POST'])

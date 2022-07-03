@@ -1,8 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
 <div style="margin-left: 10px; height: 100%">
     <div style="margin-top: 10px">
+        <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Todas as Suas Comunidades
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        {% if current_user.is_authenticated %}
+              <span class="fs-4">Suas Comunidades</span>
+               {% else %}
+              <span class="fs-4">Últimas Comunidades</span>
+               {% endif %}
+              <ul class="nav nav-pills flex-column mb-auto">
+               {% for comunidade in comunidades[:10] %}
+              <li class="nav-item">
+                <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
+                    {{ comunidade.nome }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+      </div>
+    </div>
     <h4 class="text-white" style="margin: 40px auto 10px 20px">Posts de {{ comunidade.nome }} </h4>
     {% if posts.count() == 0 %}
         <p class="text-white" style="margin-left: 2%">Nenhum post encontrado nesta comunidade.</p>
@@ -12,7 +37,7 @@
             <div class="card-body">
                 <div class="small text-muted">{{ post.autor_post.username }} | {{ post.data.strftime("%B %d, %Y") }}</div>
                 <h2 class="card-title h4">{{ post.titulo[:51] }}{% if post.titulo[50] %}... {% endif %}</h2>
-                <p class="card-text">{{ post.corpo[:101] | safe }}{% if post.bodcorpoy[100] %}... {% endif %}</p>
+                <p class="card-text">{{ post.corpo[:101] | safe }}{% if post.corpo[100] %}... {% endif %}</p>
                 <div id="buttons" style="position: relative">
                     <a class="btn btn-dark" href="{{ url_for('show_post', q_id=post.id) }}">Ver Post</a>
                 </div>

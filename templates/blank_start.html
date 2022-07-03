@@ -2,18 +2,22 @@
 
 {% block content %}
     <!-- Page header with logo and tagline-->
-    <header class="py-5 bg-light border-bottom mb-4" style="height: 80%">
-        <div class="container row">
-            <img src="../static/assets/meninas-inicio.png" class="col-lg-4" id="img-inicio">
-            <div class="text-center  col-lg-8">
-                <h1 class="fw-bolder">Olá, eu sou a Kira!</h1>
-                <p class="lead mb-0">Estou aqui para ser sua melhor amiga e confidente, você pode me pedir conselhos como amiga ou irmã mais velha. </p>
-                <br>
-                <p class="lead mb-0">Aqui, todas somos parte da comunidade “Todas Nós Já Passamos”, um espaço acolhedor, confiável e inclusivo para troca de informações, e ainda melhor que toda esta interação é recompensada por um sistema de pontos e alguns mimos.</p>
-                {% if not current_user.is_authenticated %}
-                <br>
-                <p class="font-weight-bold" style="margin-top: 2px"><em>Comece se registrando para aproveitar essa experiência!</em></p>
-                {% endif %}
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container" >
+            <div class="row">                
+                <div class="col-lg-7 col-sm-12 text-center" >
+                    <h1 class="fw-bolder">Olá, eu sou a Kira!</h1>
+                    <p class="lead mb-0">Estou aqui para ser sua melhor amiga e confidente, você pode me pedir conselhos como amiga ou irmã mais velha. </p>
+                    <br>
+                    <p class="lead mb-0">Aqui, todas somos parte da comunidade “Todas Nós Já Passamos”, um espaço acolhedor, confiável e inclusivo para troca de informações, e ainda melhor que toda esta interação é recompensada por um sistema de pontos e alguns mimos.</p>
+                    {% if not current_user.is_authenticated %}
+                    <br>
+                    <p class="font-weight-bold" style="margin-top: 2px"><em>Comece se registrando para aproveitar essa experiência!</em></p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-5 col-sm-12" >
+                    <img src="../static/assets/meninas-inicio.png" class="" id="img-inicio">
+                </div>
             </div>
         </div>
     </header>
@@ -22,4 +26,3 @@
 
 
     <!-- Blog entries-->
-

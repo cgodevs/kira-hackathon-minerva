@@ -83,8 +83,8 @@
 
 html, body{
   font-family: "Kotex-Light", "Kotex-Bold", "Montserrat", "Arial", "Calibri";
-  height: 100%;
 }
+
 .italic{
   font-style: italic !important;
 }
@@ -95,33 +95,21 @@ html, body{
 }
 
 #img-inicio{
-  position: absolute;
-  right: 0;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-@media only screen and (max-width: 568px) {
-  #img-inicio {
-    position: absolute;
-    bottom: 0;
-  }
+
+#box{
+  display: flex;
 }
-@media only screen and (max-width: 994px) {
-  #img-inicio {
-    position: absolute;
-    width: 50vw;
-    height: 50vw;
-    bottom: 0;
-  }
-}
-
-/* Menu lateral recolhivel*/
-
-
 
 
 
 body, html {
   background-image: linear-gradient(180deg, #FF00BB, black);
+  max-width: 100%;
+  max-height: 100%;
 }
 
 #post-display{

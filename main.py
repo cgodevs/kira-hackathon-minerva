@@ -16,12 +16,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///database.db") #'sqlite:///database.db' #
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' #os.environ.get("DATABASE_URL", "sqlite:///database.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -340,9 +340,10 @@ def novo_post():
                     id_comunidade=id_comunidade,
                     corpo=corpo,
                     eh_artigo=False)
+
+        autor_post.pontos += 20
         db.session.add(post)
         db.session.commit()
-        current_user.pontos += 30
         return redirect(url_for('comunidades', base='recentes'))
     return render_template('novo-post.html', form=form_post)
 
@@ -363,11 +364,13 @@ def nova_comunidade():
                         )
         db.session.add(comunidade_nova)
         db.session.commit()
+
+        criador.pontos += 30
+
         nova_relacao = Participacao(
             id_usuario=current_user.id,
             id_comunidade=comunidade_nova.id
         )
-
         db.session.add(nova_relacao)
         db.session.commit()
         #usuario_logado = Usuario.query.get(current_user.id)
@@ -461,6 +464,7 @@ def show_post(q_id):
                                   post_id=q_id,
                                   autor_comentario=current_user,  
                                   parent_post=db_post)
+            Usuario.query.get(current_user.id).pontos += 15
             db.session.add(novo_comentario)
             db.session.commit()
         return render_template('post.html', post=db_post, form_comentario=form_comentario)
@@ -470,9 +474,12 @@ def show_post(q_id):
 
 @app.route("/upvote/<int:q_id>")
 def upvote_post(q_id):
-    db_post = Post.query.get(q_id)
-    db_post.upvotes += 1
-    db.session.commit()     # a bug here is the user can upvote the post infinitely
+    post = Post.query.get(q_id)
+    post.upvotes += 1
+    autor_post = Post.query.get(post.id).autor_post
+    if current_user.id != autor_post.id:
+        Usuario.query.get(autor_post.id).pontos += 1
+    db.session.commit()
     return redirect(url_for('show_post', q_id=q_id))
 
 

@@ -150,32 +150,31 @@ def comunidades(base):
     if current_user.is_authenticated:
         if db.session.query(Post).first():
             pagination = 1
-            all_latest_posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10)
-            number_of_pages = int(ceil(all_latest_posts.count() / 6))
-            page_posts = all_latest_posts[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
-            most_upvoted_post = db.session.query(Post).order_by(Post.id.desc()).first()     # last record
-            for post in all_latest_posts:
-                if post.upvotes > most_upvoted_post.upvotes:
-                    most_upvoted_post = post    # mais votado nos últimos 10 dias ou é o último registro disponível
-            print(current_user.id)
-            participacoes_usuario = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
+            ultimos_posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10)
+            number_of_pages = int(ceil(ultimos_posts.count() / 6))
+            page_posts = ultimos_posts[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
+            posts_mais_votados = db.session.query(Post).order_by(Post.upvotes.desc())
+            todas_comunidades = db.session.query(Comunidade).all()
+            #artigos são posts com o atributo "eh_Artigo" True
 
-            comunidades_do_usuario = [Comunidade.query.get(participacao.id_comunidade) for participacao in participacoes_usuario]
-
-            if base == "descubra":
-                todas = db.session.query(Comunidade).all()
-            else:
-                todas = None
+            #participacoes_usuario = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
+            #comunidades_criadas = [Comunidade.query.get(participacao.id_comunidade) for participacao in participacoes_usuario]
+            #if base == "descubra":
+                #todas = db.session.query(Comunidade).all()
+            #else:
+                #todas = None
 
 
             return render_template("comunidades.html",
                                    base=base,
-                                   todas_comunidades=todas,
+                                   #todas_comunidades=todas,
                                    pagination=pagination,
-                                   featured_post=most_upvoted_post,
+                                   ultimos_posts=ultimos_posts,
+                                   posts_mais_votados=posts_mais_votados,
+                                   #featured_post=post_mais_votado,
                                    posts=page_posts,
                                    pages=number_of_pages,
-                                   comunidades=comunidades_do_usuario)
+                                   comunidades=todas_comunidades)
     todas_comunidades = db.session.query(Comunidade).all()
     return render_template("comunidades.html", comunidades=todas_comunidades)
  

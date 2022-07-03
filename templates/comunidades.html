@@ -73,27 +73,22 @@
     </p>
     <div class="collapse" id="collapseExample">
       <div class="card card-body">
-        {% if current_user.is_authenticated %}
-              <span class="fs-4">Suas Comunidades</span>
-               {% else %}
-              <span class="fs-4">Últimas Comunidades</span>
-               {% endif %}
-              <ul class="nav nav-pills flex-column mb-auto">
-               {% for comunidade in comunidades[:10] %}
-              <li class="nav-item">
-                <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
-                    {{ comunidade.nome }}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
+        <ul class="nav nav-pills flex-column mb-auto">
+      {% for comunidade in comunidades[:10] %}
+          <li class="nav-item">
+            <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
+                {{ comunidade.nome }}
+            </a>
+          </li>
+      {% endfor %}
+        </ul>
       </div>
     </div>
 
 
    <!-- Seções de Artigos -->
     {% if base == 'featured'%}
-        {% with posts=posts %}
+        {% with posts=posts_mais_votados %}
             {% include 'featured.html' %}
         {% endwith %}
     {% elif base == 'artigos'%}
@@ -101,11 +96,11 @@
             {% include 'artigos.html' %}
         {% endwith %}
     {% elif base == 'recentes'%}
-        {% with posts=posts %}
+        {% with posts=ultimos_posts %}
             {% include 'recentes.html' %}
         {% endwith %}
     {% elif base == 'descubra'%}
-        {% with comunidades=todas_comunidades %}
+        {% with comunidades=comunidades %}
             {% include 'descubra.html' %}
         {% endwith %}
     {% endif %}

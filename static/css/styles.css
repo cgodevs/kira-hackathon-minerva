@@ -106,9 +106,12 @@ html, body{
 
 
 
-body, html {
-  background-image: linear-gradient(180deg, #FF00BB, black);
-  max-width: 100%;
+html, body {
+  background-image: linear-gradient(180deg, #FF00BB, black);  
+}
+
+body{
+  height: 100% !important;
   max-height: 100%;
 }
 

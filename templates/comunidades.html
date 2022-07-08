@@ -14,7 +14,7 @@
         id="ex1-tab-1"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-1')"
-        href="{{ url_for('comunidades', base='artigos') }}"
+        href="{{ url_for('comunidades', base='artigos', pagina=1) }}"
         role="tab"
         aria-controls="ex1-tabs-1"
         aria-selected="true"
@@ -27,7 +27,7 @@
         id="ex1-tab-2"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-2')"
-        href="{{ url_for('comunidades', base='featured') }}"
+        href="{{ url_for('comunidades', base='featured', pagina=1) }}"
         role="tab"
         aria-controls="ex1-tabs-2"
         aria-selected="false"
@@ -40,7 +40,7 @@
         id="ex1-tab-3"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-3')"
-        href="{{ url_for('comunidades', base='recentes') }}"
+        href="{{ url_for('comunidades', base='recentes', pagina=1) }}"
         role="tab"
         aria-controls="ex1-tabs-3"
         aria-selected="false"
@@ -52,7 +52,7 @@
         class="nav-link text-white aba_comunidade"
         id="ex1-tab-3"
         data-mdb-toggle="tab"
-        href="{{ url_for('comunidades', base='descubra') }}"
+        href="{{ url_for('comunidades', base='descubra', pagina=1) }}"
         role="tab"
         aria-controls="ex1-tabs-3"
         aria-selected="false"
@@ -88,22 +88,33 @@
 
    <!-- Seções de Artigos -->
     {% if base == 'featured'%}
-        {% with posts=posts_mais_votados %}
+        {% with posts=posts_featured, pages=n_paginas%}
             {% include 'featured.html' %}
         {% endwith %}
     {% elif base == 'artigos'%}
-        {% with posts=posts %}
+        {% with posts=posts, pages=n_paginas %}
             {% include 'artigos.html' %}
         {% endwith %}
     {% elif base == 'recentes'%}
-        {% with posts=ultimos_posts %}
+        {% with posts=ultimos_posts, pages=n_paginas %}
             {% include 'recentes.html' %}
         {% endwith %}
     {% elif base == 'descubra'%}
-        {% with comunidades=comunidades %}
+        {% with comunidades=comunidades, pages=n_paginas %}
             {% include 'descubra.html' %}
         {% endwith %}
     {% endif %}
     </div>
+    <!-- paginação -->
+    <nav aria-label="Pagination">
+            <hr class="my-0" />
+            <ul class="pagination justify-content-center my-4">
+                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Mais Novos</a></li>
+                {% for pagina in range(n_paginas) %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=pagina+1) }}">{{ pagina + 1 }}</a></li>
+                {% endfor %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=n_paginas-1) }}">Mais Antigos</a></li>
+            </ul>
+    </nav>
 </div>
 {% endblock %}

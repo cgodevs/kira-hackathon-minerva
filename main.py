@@ -16,7 +16,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
@@ -145,37 +145,31 @@ def home():
     return render_template("blank_start.html")
 
 
-@app.route('/comunidades/<base>')
-def comunidades(base):
+@app.route('/comunidades/<base>/<int:pagina>')
+def comunidades(base, pagina=1):
+    todas_comunidades = db.session.query(Comunidade).all()
     if current_user.is_authenticated:
-        if db.session.query(Post).first():
-            pagination = 1
-            ultimos_posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10)
-            number_of_pages = int(ceil(ultimos_posts.count() / 6))
-            page_posts = ultimos_posts[(pagination - 1) * 6: (pagination - 1) * 6 + 6]
-            posts_mais_votados = db.session.query(Post).order_by(Post.upvotes.desc())
-            todas_comunidades = db.session.query(Comunidade).all()
-            #artigos são posts com o atributo "eh_Artigo" True
+        if db.session.query(Post).first():  # se houver algum post
+            posts = None
 
-            #participacoes_usuario = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
-            #comunidades_criadas = [Comunidade.query.get(participacao.id_comunidade) for participacao in participacoes_usuario]
-            #if base == "descubra":
-                #todas = db.session.query(Comunidade).all()
-            #else:
-                #todas = None
+            if base == 'featured':
+                posts = db.session.query(Post).filter(Post.upvotes > 0).order_by(Post.upvotes.desc())
+            elif base == 'artigos':
+                posts = db.session.query(Post).filter(Post.eh_artigo is True).order_by(Post.data.desc())
+            elif base == 'recentes':
+                # não aparecem posts mais velhos que 10 dias
+                posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10)
+            elif base == 'descubra':
+                pass
 
-
+            posts_de_uma_pagina = posts[(pagina - 1) * 6: (pagina - 1) * 6 + 6]
+            n_paginas = int(ceil(posts.count() / 6))
             return render_template("comunidades.html",
                                    base=base,
-                                   #todas_comunidades=todas,
-                                   pagination=pagination,
-                                   ultimos_posts=ultimos_posts,
-                                   posts_mais_votados=posts_mais_votados,
-                                   #featured_post=post_mais_votado,
-                                   posts=page_posts,
-                                   pages=number_of_pages,
+                                   pagination=pagina,
+                                   posts=posts_de_uma_pagina,
+                                   n_paginas=n_paginas,
                                    comunidades=todas_comunidades)
-    todas_comunidades = db.session.query(Comunidade).all()
     return render_template("comunidades.html", comunidades=todas_comunidades)
  
 

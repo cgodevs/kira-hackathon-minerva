@@ -70,7 +70,11 @@
             <div class="col-lg-3">
                 <p>
                   <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    Suas Comunidades
+                    {% if current_user.is_authenticated %}
+                      Suas Comunidades
+                    {% else %}
+                      Todas as comunidades
+                    {% endif %}
                   </button>
                 </p>
                 <div class="collapse" id="collapseExample">

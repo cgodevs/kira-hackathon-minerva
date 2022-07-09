@@ -17,7 +17,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "aa" #os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
@@ -187,7 +187,11 @@ def comunidades(base, pagina=1):
         else:
             return home()
     if todas_comunidades:  # proteção contra erros no momento inicial em que ainda não existe db
-        return render_template("comunidades.html", todas_comunidades=todas_comunidades, comunidades_associadas=todas_comunidades)
+        n_paginas = int(ceil(len(list(todas_comunidades)) / 4))
+        return render_template("comunidades.html",
+                               todas_comunidades=todas_comunidades,
+                               comunidades_associadas=todas_comunidades,
+                               n_paginas=n_paginas)
     else:
         return home()
 
@@ -327,7 +331,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-# TODO volta aqui após criar comunidades
+
 @app.route('/novo-post', methods=['GET', 'POST'])
 def novo_post():
     relacoes_comunidades = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
@@ -335,7 +339,7 @@ def novo_post():
     form_post = FormPost()
     form_post.comunidade_form.choices = [(comunidade.id, comunidade.nome) for comunidade in comunidades_usuario]
 
-    if form_post.comunidade_form.choices is None:  #TODO retirar isso, tornar opção de postar inativa
+    if form_post.comunidade_form.choices is None:
         return render_template("Você não se cadastrou em nenhum comunidade ainda.")
 
     if form_post.validate_on_submit():
@@ -385,9 +389,8 @@ def nova_comunidade():
         )
         db.session.add(nova_relacao)
         db.session.commit()
-        #usuario_logado = Usuario.query.get(current_user.id)
-        #usuario_logado.pontos += 35
-        return redirect(url_for('comunidades', base='recentes')) # TODO Retornar para a página de recentes desta comunidade
+
+        return redirect(url_for('comunidades', base='recentes'))
     return render_template("criar-comunidade.html", form=nova_comu_form)
 
 

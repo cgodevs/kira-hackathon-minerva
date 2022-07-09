@@ -4,30 +4,6 @@
 
 
 <div style="margin-left: 10px; height: 100%">
-    <div style="margin-top: 10px">
-        <p>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Todas as Comunidades
-      </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        {% if current_user.is_authenticated %}
-              <span class="fs-4">Suas Comunidades</span>
-               {% else %}
-              <span class="fs-4">Últimas Comunidades</span>
-               {% endif %}
-              <ul class="nav nav-pills flex-column mb-auto">
-               {% for comunidade in comunidades[:10] %}
-              <li class="nav-item">
-                <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
-                    {{ comunidade.nome }}
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-      </div>
-    </div>
     <h4 class="text-white" style="margin: 40px auto 10px 20px">Posts de {{ comunidade.nome }} </h4>
     {% if posts.count() == 0 %}
         <p class="text-white" style="margin-left: 2%">Nenhum post encontrado nesta comunidade.</p>

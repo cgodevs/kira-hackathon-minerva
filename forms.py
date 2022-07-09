@@ -24,7 +24,7 @@ class FormLogin(FlaskForm):
 
 class FormPost(FlaskForm):
     titulo_form = StringField("Título do Post", validators=[DataRequired()])
-    comunidade_form = SelectField("Escolha uma Comunidade")
+    comunidade_form = SelectField("Escolha uma de suas Comunidades")
     corpo_form = CKEditorField("Mensagem", validators=[DataRequired()])
     submit = SubmitField("Enviar")
 

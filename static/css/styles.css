@@ -104,23 +104,17 @@ html, body{
   display: flex;
 }
 
-
-
-html, body {
-  background-image: linear-gradient(180deg, #FF00BB, black);  
+html {
+  display: block;
+  height: 100%;
 }
-
-body{
-  height: 100% !important;
-  max-height: 100%;
+body {
+  background-image: linear-gradient(180deg, #FF00BB, black);
+  background-repeat: no-repeat;
 }
 
 #post-display{
   margin-top: 1.2em;
-}
-
-.corpo-total{
-  height: 100%;
 }
 
 .botoes-ingresso, .botao-rosa{

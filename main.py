@@ -1,3 +1,4 @@
+import sqlalchemy.exc
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
 from datetime import date, timedelta
@@ -16,7 +17,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "aa" # os.environ.get("SECRET_KEY") #"SECRET_KEY"
+app.config['SECRET_KEY'] = "aa" #os.environ.get("SECRET_KEY") #"SECRET_KEY"
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 
@@ -54,9 +55,8 @@ class Usuario(UserMixin, db.Model): #PAI
 
 class Participacao(db.Model):  # tabela para comportar relação M:N
     __tablename__ = "participacao"
-    id = db.Column(db.Integer, primary_key=True)
-    id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"))
-    id_comunidade = db.Column(db.Integer, db.ForeignKey("comunidades.id"))
+    id_usuario = db.Column(db.Integer, db.ForeignKey("usuarios.id"), primary_key=True)
+    id_comunidade = db.Column(db.Integer, db.ForeignKey("comunidades.id"), primary_key=True)
 
 
 class Comunidade(db.Model): #PAI
@@ -145,33 +145,51 @@ def home():
     return render_template("blank_start.html")
 
 
-@app.route('/comunidades/<base>/<int:pagina>')
+@app.route('/comunidades/<base>')
 def comunidades(base, pagina=1):
     todas_comunidades = db.session.query(Comunidade).all()
+
     if current_user.is_authenticated:
+        inscricoes = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
+        comunidades_associadas = [db.session.query(Comunidade).get(inscricao.id_comunidade)
+                                 for inscricao in inscricoes]  # estas são também as comunidades criadas
+
         if db.session.query(Post).first():  # se houver algum post
             posts = None
-
             if base == 'featured':
-                posts = db.session.query(Post).filter(Post.upvotes > 0).order_by(Post.upvotes.desc())
+                posts = db.session.query(Post).filter(Post.upvotes > 0).order_by(Post.upvotes.desc()).all()
             elif base == 'artigos':
-                posts = db.session.query(Post).filter(Post.eh_artigo is True).order_by(Post.data.desc())
+                posts = db.session.query(Post).filter(Post.eh_artigo is True).order_by(Post.data.desc()).all()
             elif base == 'recentes':
                 # não aparecem posts mais velhos que 10 dias
-                posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10)
+                posts = db.session.query(Post).order_by(Post.id.desc()).filter(date.today() - Post.data <= 10).all()
             elif base == 'descubra':
-                pass
+                comunidades_de_uma_pagina = todas_comunidades[(pagina - 1) * 4: (pagina - 1) * 4 + 4]
+                n_paginas = int(ceil(len(list(todas_comunidades)) / 4)) #TODO aumentar o valor
+                return render_template("comunidades.html",
+                                       base=base,
+                                       pagina=pagina,
+                                       comunidades_de_uma_pagina=comunidades_de_uma_pagina,
+                                       n_paginas=n_paginas,
+                                       todas_comunidades=todas_comunidades,
+                                       comunidades_associadas=comunidades_associadas)
 
             posts_de_uma_pagina = posts[(pagina - 1) * 6: (pagina - 1) * 6 + 6]
-            n_paginas = int(ceil(posts.count() / 6))
+            n_paginas = int(ceil(len(list(posts)) / 6))
+
             return render_template("comunidades.html",
                                    base=base,
-                                   pagination=pagina,
+                                   pagina=pagina,
                                    posts=posts_de_uma_pagina,
                                    n_paginas=n_paginas,
-                                   comunidades=todas_comunidades)
-    return render_template("comunidades.html", comunidades=todas_comunidades)
- 
+                                   todas_comunidades=todas_comunidades,
+                                   comunidades_associadas=comunidades_associadas)
+        else:
+            return home()
+    if todas_comunidades:  # proteção contra erros no momento inicial em que ainda não existe db
+        return render_template("comunidades.html", todas_comunidades=todas_comunidades, comunidades_associadas=todas_comunidades)
+    else:
+        return home()
 
 @app.route('/artigos')
 def artigos():
@@ -378,6 +396,18 @@ def minhas_comunidades_criadas():
     comunidades_criadas = current_user.comunidades_criadas
     return render_template("comunidades-criadas.html", comunidades_criadas=comunidades_criadas)
 
+
+@app.route('/unir-se/<int:id_comunidade>')
+def unir_se(id_comunidade):
+    try:
+        nova_inscricao = Participacao(id_usuario=current_user.id,
+                                      id_comunidade=id_comunidade)
+        db.session.add(nova_inscricao)
+        db.session.commit()
+    except (sqlalchemy.exc.IntegrityError, sqlalchemy.exc.InvalidRequestError):
+        return comunidades('descubra', pagina=1)
+    return busca_comunidade(id_comu=id_comunidade)
+
 @app.route('/my-profile/<menu_action>', methods=['GET', 'POST'])
 def my_profile(menu_action):
     if menu_action == 'reset-pw':
@@ -414,7 +444,6 @@ def my_profile(menu_action):
 
 @app.route('/user/<int:id_usuario>')
 def user_page(id_usuario):
-    print(id_usuario)
     usuario = Usuario.query.get(id_usuario)
     return render_template('perfil-usuario.html', usuario=usuario)
 
@@ -496,12 +525,14 @@ def delete_comment(q_id, comment_id):
 @app.route("/busca/<id_comu>")
 def busca_comunidade(id_comu: int):
     comunidade_escolhida = Comunidade.query.get(id_comu)
-    print(comunidade_escolhida)
     all_category_posts = db.session.query(Post) \
         .filter_by(comunidade=comunidade_escolhida) \
         .order_by(Post.id.desc())
     todas = db.session.query(Comunidade).all()
-
+    if current_user.is_authenticated:
+        inscricoes = db.session.query(Participacao).filter_by(id_usuario=current_user.id).all()
+        todas = [db.session.query(Comunidade).get(inscricao.id_comunidade)
+                                  for inscricao in inscricoes]
     return render_template('posts-comunidade.html',
                            posts=all_category_posts,
                            comunidade=comunidade_escolhida,

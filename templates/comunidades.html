@@ -14,7 +14,7 @@
         id="ex1-tab-1"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-1')"
-        href="{{ url_for('comunidades', base='artigos', pagina=1) }}"
+        href="{{ url_for('comunidades', base='artigos') }}"
         role="tab"
         aria-controls="ex1-tabs-1"
         aria-selected="true"
@@ -27,7 +27,7 @@
         id="ex1-tab-2"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-2')"
-        href="{{ url_for('comunidades', base='featured', pagina=1) }}"
+        href="{{ url_for('comunidades', base='featured') }}"
         role="tab"
         aria-controls="ex1-tabs-2"
         aria-selected="false"
@@ -40,7 +40,7 @@
         id="ex1-tab-3"
         data-mdb-toggle="tab"
         onclick="aba_fica_ativa('ex1-tab-3')"
-        href="{{ url_for('comunidades', base='recentes', pagina=1) }}"
+        href="{{ url_for('comunidades', base='recentes') }}"
         role="tab"
         aria-controls="ex1-tabs-3"
         aria-selected="false"
@@ -52,7 +52,7 @@
         class="nav-link text-white aba_comunidade"
         id="ex1-tab-3"
         data-mdb-toggle="tab"
-        href="{{ url_for('comunidades', base='descubra', pagina=1) }}"
+        href="{{ url_for('comunidades', base='descubra') }}"
         role="tab"
         aria-controls="ex1-tabs-3"
         aria-selected="false"
@@ -64,57 +64,73 @@
 <!-- FIM ABAS -->
 {% endif %}
 
-    <div class="row">
-    <!-- Menu lateral -->
-    <p>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Todas as Comunidades
-      </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-      <div class="card card-body">
-        <ul class="nav nav-pills flex-column mb-auto">
-      {% for comunidade in comunidades[:10] %}
-          <li class="nav-item">
-            <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
-                {{ comunidade.nome }}
-            </a>
-          </li>
-      {% endfor %}
-        </ul>
-      </div>
+    <div class="container">
+        <div class="row">
+            <!-- Menu lateral -->
+            <div class="col-lg-3">
+                <p>
+                  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Suas Comunidades
+                  </button>
+                </p>
+                <div class="collapse" id="collapseExample">
+                  <div class="card card-body">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                  {% if current_user.is_authenticated %}
+                      {% for comunidade in comunidades_associadas[:10] %}
+                          <li class="nav-item">
+                            <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
+                                {{ comunidade.nome }}
+                            </a>
+                          </li>
+                      {% endfor %}
+                  {% else %}
+                      {% for comunidade in todas_comunidades[:10] %}
+                          <li class="nav-item">
+                            <a href="{{ url_for('busca_comunidade', id_comu=comunidade.id) }}" class="nav-link" aria-current="page">
+                                {{ comunidade.nome }}
+                            </a>
+                          </li>
+                      {% endfor %}
+                  {% endif %}
+                    </ul>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+               <!-- Seções de Artigos -->
+                {% if base == 'featured'%}
+                    {% with posts=posts %}
+                        {% include 'featured.html' %}
+                    {% endwith %}
+                {% elif base == 'artigos'%}
+                    {% with posts=posts %}
+                        {% include 'artigos.html' %}
+                    {% endwith %}
+                {% elif base == 'recentes'%}
+                    {% with posts=posts %}
+                        {% include 'recentes.html' %}
+                    {% endwith %}
+                {% elif base == 'descubra'%}
+                    {% with comunidades=comunidades_de_uma_pagina, comunidades_associadas=comunidades_associadas %}
+                        {% include 'descubra.html' %}
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
     </div>
+        <!-- Pagination-->
 
-
-   <!-- Seções de Artigos -->
-    {% if base == 'featured'%}
-        {% with posts=posts_featured, pages=n_paginas%}
-            {% include 'featured.html' %}
-        {% endwith %}
-    {% elif base == 'artigos'%}
-        {% with posts=posts, pages=n_paginas %}
-            {% include 'artigos.html' %}
-        {% endwith %}
-    {% elif base == 'recentes'%}
-        {% with posts=ultimos_posts, pages=n_paginas %}
-            {% include 'recentes.html' %}
-        {% endwith %}
-    {% elif base == 'descubra'%}
-        {% with comunidades=comunidades, pages=n_paginas %}
-            {% include 'descubra.html' %}
-        {% endwith %}
-    {% endif %}
-    </div>
-    <!-- paginação -->
     <nav aria-label="Pagination">
-            <hr class="my-0" />
-            <ul class="pagination justify-content-center my-4">
-                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Mais Novos</a></li>
-                {% for pagina in range(n_paginas) %}
-                    <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=pagina+1) }}">{{ pagina + 1 }}</a></li>
-                {% endfor %}
-                <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=n_paginas-1) }}">Mais Antigos</a></li>
-            </ul>
+        <hr class="my-0" />
+        <ul class="pagination justify-content-center my-4">
+            <li class="page-item {% if pagina == 1 %} disabled {% endif %}"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=1) }}" tabindex="-1" aria-disabled="true">Mais Novos</a></li>
+        {% for p in range(1, n_paginas+1) %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=p) }}">{{ p }}</a></li>
+        {% endfor %}
+
+            <li class="page-item"><a class="page-link" href="{{ url_for('comunidades', base=base, pagina=n_paginas-1) }}">Mais Antigos</a></li>
+        </ul>
     </nav>
 </div>
 {% endblock %}
